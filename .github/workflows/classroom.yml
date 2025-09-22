@@ -74,6 +74,12 @@ jobs:
 
           # Deploy on server
           sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} "
+            if ! docker compose version &>/dev/null; then
+              echo 'Installing Docker Compose plugin...'
+              sudo apt-get update
+              sudo apt-get install -y docker-compose-plugin
+            fi
+            
             cd /home/rsoi1/app/
             docker load -i person.tar
             docker compose down
