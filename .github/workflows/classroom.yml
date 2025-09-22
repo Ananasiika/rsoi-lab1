@@ -3,38 +3,71 @@ on:
   push:
     branches:
       - master
+      - dev
   pull_request:
     branches:
       - master
+      - dev
 jobs:
-  build:
-    name: Autograding
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
         with:
-          fetch-depth: 0
+          dotnet-version: '9.0.x'
 
-      # TODO build, test and deploy project
+      - name: Build
+        run: dotnet build --configuration Release
 
-      - name: Run API Tests
-        uses: matt-ball/newman-action@master
-        with:
-          collection: postman/[inst] Lab1.postman_collection.json
-          environment: postman/[inst][heroku] Lab1.postman_environment.json
-          delayRequest: 100
-          reporters: '[ "cli" ]'
+      - name: Run Unit Tests
+        run: dotnet test --configuration Release
 
-      - name: Autograding
-        uses: education/autograding@v1
-        continue-on-error: true
+      - name: Publish
+        run: dotnet publish -c Release -o ./publish
 
-      - name: Github auto grader mark
-        uses: Romanow/google-sheet-autograder-marker@v1.0
-        with:
-          google_token: ${{secrets.GOOGLE_API_KEY}}
-          sheet_id: "1xkgjUX6Qmk7rdJG-QPOToav-HWWtthJjnShIKnw3oIY"
-          homework_number: 1
-          user_column: 'D'
-          column_offset: 'F'
-          mark: "'+"
+
+
+
+
+
+
+
+
+
+
+
+
+  # integration-tests:
+  #   name: Autograding
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+
+  #     # TODO build, test and deploy project
+
+  #     - name: Run API Tests
+  #       uses: matt-ball/newman-action@master
+  #       with:
+  #         collection: postman/[inst] Lab1.postman_collection.json
+  #         environment: postman/[inst][heroku] Lab1.postman_environment.json
+  #         delayRequest: 100
+  #         reporters: '[ "cli" ]'
+
+  #     - name: Autograding
+  #       uses: education/autograding@v1
+  #       continue-on-error: true
+
+  #     - name: Github auto grader mark
+  #       uses: Romanow/google-sheet-autograder-marker@v1.0
+  #       with:
+  #         google_token: ${{secrets.GOOGLE_API_KEY}}
+  #         sheet_id: "1xkgjUX6Qmk7rdJG-QPOToav-HWWtthJjnShIKnw3oIY"
+  #         homework_number: 1
+  #         user_column: 'D'
+  #         column_offset: 'F'
+  #         mark: "'+"
