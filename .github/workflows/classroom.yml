@@ -26,9 +26,6 @@ jobs:
       - name: Publish application
         run: dotnet publish src/Person/Person.Server/Person.Server.csproj -c Release -o PersonPublish
 
-      - name: Verify published files
-        run: ls -la PersonPublish/
-
       - name: Build app Docker image
         run: |
           docker build -t person-service:latest ./
@@ -47,11 +44,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '9.0.x'
-
       - name: Run Unit Tests
         run: dotnet test src/Person/Person.sln
 
@@ -67,23 +59,22 @@ jobs:
         with:
           name: app-image
 
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+
       - name: Copy files to server and deploy
         run: |
-          # Create directory on server
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "mkdir -p /home/rsoi1/app"
-          
           # Copy files to server
-          scp -o StrictHostKeyChecking=no person.tar docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/rsoi1/app/
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" scp -o StrictHostKeyChecking=no person.tar docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/rsoi1/app/
 
           # Deploy on server
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
             cd /home/rsoi1/app/
             docker load -i person.tar
             docker compose down
             docker compose up -d
             echo 'Application deployed on port 8090'
           "
-
 
 
 
