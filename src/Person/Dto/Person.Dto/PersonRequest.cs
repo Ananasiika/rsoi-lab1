@@ -15,7 +15,7 @@ public class PersonRequest
     [Required]
     [DataMember(Name = "name")]
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// Возраст.
@@ -39,7 +39,7 @@ public class PersonRequest
     public string? Work { get; set; }
 
     // Конструктор для удобства
-    public PersonRequest(string name, int? age, string? address, string? work)
+    public PersonRequest(string? name, int? age, string? address, string? work)
     {
         Name = name;
         Age = age;

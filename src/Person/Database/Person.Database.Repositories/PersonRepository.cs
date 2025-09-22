@@ -32,7 +32,7 @@ public class PersonRepository : IPersonRepository
         return PersonConverter.Convert(dbPerson);
     }
 
-    public async Task<CorePerson> UpdatePersonAsync(int id, string name, int? age, string? address, string? work)
+    public async Task<CorePerson> UpdatePersonAsync(int id, string? name, int? age, string? address, string? work)
     {
         var dbPerson = await GetDbPersonByIdAsync(id);
         
@@ -45,10 +45,14 @@ public class PersonRepository : IPersonRepository
                 throw new PersonAlreadyExistsException($"Person with name '{name}' already exists");
         }
         
-        dbPerson.Name = name;
-        dbPerson.Age = age;
-        dbPerson.Address = address;
-        dbPerson.Work = work;
+        if (name is not null)
+            dbPerson.Name = name;
+        if (age is not null)
+            dbPerson.Age = age.Value;
+        if (address is not null)
+            dbPerson.Address = address;
+        if (work is not null)
+            dbPerson.Work = work;
         
         await _context.SaveChangesAsync();
         
