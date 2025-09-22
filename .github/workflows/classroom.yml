@@ -71,7 +71,7 @@ jobs:
         run: |
           sshpass -p ${{ secrets.SERVER_PASSWORD }} scp -o StrictHostKeyChecking=no person.tar ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/home/rsoi1/app/
           sshpass -p ${{ secrets.SERVER_PASSWORD }} scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/home/rsoi1/app/
-          sshpass -p ${{ secrets.SERVER_PASSWORD }} scp -o StrictHostKeyChecking=no postgres/10-create-user-and-db.sql ${{ secrets.SERVER_USERNAME }}@${{ SERVER_HOST.SERVER_IP_ADDRESS }}:/home/rsoi1/app/postgres
+          sshpass -p ${{ secrets.SERVER_PASSWORD }} scp -o StrictHostKeyChecking=no postgres/10-create-user-and-db.sql ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/home/rsoi1/app/postgres
 
           sshpass -p ${{ secrets.SERVER_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} docker load -i person.tar
           sshpass -p ${{ secrets.SERVER_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} docker-compose up -d
