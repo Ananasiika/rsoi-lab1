@@ -75,7 +75,7 @@ public class PersonController : ControllerBase
     /// </summary>
     /// <remarks>Метод для обновления сущности Person.</remarks>
     /// <param name="personRequest">Запрос на обновление.</param>
-    /// <param name="personId">Идентификатор сущности.</param>
+    /// <param name="id">Идентификатор сущности.</param>
     /// <response code="200">Сущность Person успешно обновлена.</response>
     /// <response code="400">Одно или несколько полей модели невалидны.</response>
     /// <response code="404">Сущность с указанным идентификатором не существует.</response>

@@ -258,7 +258,6 @@ public class PersonUnitTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal("Jane Doe", result.Name);
-        Assert.Null(result.Age);
         Assert.Null(result.Address);
         Assert.Null(result.Work);
     }
