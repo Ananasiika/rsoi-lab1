@@ -1,7 +1,7 @@
 version: "3"
 services:
   postgres:
-    image: library/postgres:13
+    image: library/postgres:latest
     container_name: postgres
     restart: on-failure
     environment:
@@ -13,6 +13,14 @@ services:
       - ./postgres/:/docker-entrypoint-initdb.d/
     ports:
       - "5432:5432"
+
+  person_service:
+    image: xom4ik/person-service:latest
+    hostname: person_service
+    container_name: person-service
+    ports:
+      - "8080:8080"
+    restart: always
 
 volumes:
   db-data:
