@@ -15,11 +15,11 @@ services:
       - "5432:5432"
 
   person_service:
-    image: xom4ik/person-service:latest
+    image: person-service:latest
     hostname: person_service
     container_name: person-service
     ports:
-      - "8080:8080"
+      - "8090:80"
     restart: always
 
 volumes:
