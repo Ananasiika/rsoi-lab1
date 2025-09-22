@@ -20,14 +20,10 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Build
-        run: dotnet build --configuration Release
+        run: dotnet publish src/Person/Person.Server/Person.Server.csproj -c Release -o PersonPublish/
 
       - name: Run Unit Tests
-        run: dotnet test --configuration Release
-
-      - name: Publish
-        run: dotnet publish -c Release -o ./publish
-
+        run: dotnet test src/Person/Person.sln
 
 
 
