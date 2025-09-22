@@ -69,7 +69,13 @@ jobs:
 
       - name: Copy files to server and deploy
         run: |
-          sshpass -p ${{ secrets.SERVER_PASSWORD }} scp -o StrictHostKeyChecking=no person.tar ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/home/rsoi1/app/
+          timeout 120s sshpass -p "${{ secrets.SERVER_PASSWORD }}" scp \
+          -o ConnectTimeout=30 \
+          -o ServerAliveInterval=30 \
+          -o ServerAliveCountMax=3 \
+          -o StrictHostKeyChecking=no \
+          -v \
+          person.tar ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/home/rsoi1/app/
           sshpass -p ${{ secrets.SERVER_PASSWORD }} scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/home/rsoi1/app/
           sshpass -p ${{ secrets.SERVER_PASSWORD }} scp -o StrictHostKeyChecking=no postgres/10-create-user-and-db.sql ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/home/rsoi1/app/postgres
 
