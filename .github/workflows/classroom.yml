@@ -21,10 +21,13 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore src/Person/Person.sln
 
       - name: Publish application
-        run: dotnet publish -c Release -o PersonPublish
+        run: dotnet publish src/Person/Person.Server/Person.Server.csproj -c Release -o PersonPublish
+
+      - name: Verify published files
+        run: ls -la PersonPublish/
 
       - name: Build app Docker image
         run: |
