@@ -1,8 +1,10 @@
 ﻿using System.Reflection;
+using FluentValidation;
 using Microsoft.OpenApi.Models;
 using Person.Core.Interfaces;
 using Person.Database.Context.Extensions;
 using Person.Database.Repositories;
+using Person.Dto.Validators.Validators;
 using Person.Service;
 
 namespace Person.Server;
@@ -29,6 +31,7 @@ public class Startup
 
         });
         services.AddSwaggerGenNewtonsoftSupport();
+        services.AddValidatorsFromAssemblyContaining<PersonRequestValidator>();
         
         services.AddDbContext(Configuration);
         services.AddScoped<IPersonRepository, PersonRepository>();
