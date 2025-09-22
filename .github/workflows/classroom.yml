@@ -9,8 +9,27 @@ on:
       - master
       - dev
 jobs:
-  build-and-test:
+  build:
+    name: Build Docker Image
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build app Docker image
+        run: |
+          docker build -t person:latest ./
+          docker save person:latest > person.tar
+
+      - name: Save Docker image as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-image
+          path: person.tar
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: build
     steps:
       - uses: actions/checkout@v3
 
@@ -18,9 +37,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
-
-      - name: Build
-        run: dotnet publish src/Person/Person.Server/Person.Server.csproj -c Release -o PersonPublish/
 
       - name: Run Unit Tests
         run: dotnet test src/Person/Person.sln
