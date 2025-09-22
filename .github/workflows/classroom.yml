@@ -75,7 +75,7 @@ jobs:
           -o ServerAliveCountMax=3 \
           -o StrictHostKeyChecking=no \
           -v \
-          person.tar ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/home/rsoi1/app/
+          person.tar ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/home/rsoi1/app/person.tar
           sshpass -p ${{ secrets.SERVER_PASSWORD }} scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/home/rsoi1/app/
           sshpass -p ${{ secrets.SERVER_PASSWORD }} scp -o StrictHostKeyChecking=no postgres/10-create-user-and-db.sql ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/home/rsoi1/app/postgres
 
