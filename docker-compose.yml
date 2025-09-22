@@ -19,7 +19,7 @@ services:
     hostname: person_service
     container_name: person-service
     ports:
-      - "8090:80"
+      - "8090:8080"
     restart: always
 
 volumes:
