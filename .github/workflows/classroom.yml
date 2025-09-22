@@ -100,10 +100,10 @@ jobs:
             docker images | grep person-service || echo "Image not found"
             
             # Stop and remove old containers
-            docker compose down || true
+            docker-compose down || true
             
             # Start new containers
-            docker compose up -d
+            docker-compose up -d
             
             # Wait for services to start
             sleep 10
